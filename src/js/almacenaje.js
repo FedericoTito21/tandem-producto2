@@ -4,6 +4,16 @@
 //   - Usuarios y sesión  -> localStorage (síncrono)
 //   - Intercambios y selección del Dashboard -> IndexedDB (asíncrono, con promesas)
 
+export {
+  altaIntercambio,
+  obtenerIntercambios,
+  borrarIntercambio,
+  seleccionarIntercambio,
+  deseleccionarIntercambio,
+  obtenerSeleccionados,
+} from "./almacenaje/intercambios.js";
+import { obtenerIntercambios, altaIntercambio  } from "./almacenaje/intercambios.js";
+
 const CLAVE_USUARIOS = "tandem-usuarios";
 const CLAVE_SESION = "tandem-sesion";
 const CLAVE_DEMO = "tandem-demo-hecho";
@@ -66,78 +76,6 @@ export function obtenerUsuarioActivo() {
 
 export function cerrarSesion() {
   localStorage.removeItem(CLAVE_SESION);
-}
-
-/* ------------------------------------------------------------------ */
-/* Intercambios y selección del Dashboard (IndexedDB)                  */
-/* ------------------------------------------------------------------ */
-
-const NOMBRE_BD = "tandem-bd";
-const VERSION_BD = 1;
-
-// Abre la base de datos. La primera vez crea los dos almacenes de objetos.
-function abrirBD() {
-  return new Promise((resolver, rechazar) => {
-    const peticion = indexedDB.open(NOMBRE_BD, VERSION_BD);
-    peticion.onupgradeneeded = () => {
-      const bd = peticion.result;
-      bd.createObjectStore("intercambios", { keyPath: "id", autoIncrement: true });
-      bd.createObjectStore("seleccionados", { keyPath: "id" });
-    };
-    peticion.onsuccess = () => resolver(peticion.result);
-    peticion.onerror = () => rechazar(peticion.error);
-  });
-}
-
-// Ejecuta UNA operación sobre un almacén y devuelve una promesa con su resultado.
-async function operar(almacen, modo, operacion) {
-  const bd = await abrirBD();
-  return new Promise((resolver, rechazar) => {
-    const transaccion = bd.transaction(almacen, modo);
-    const peticion = operacion(transaccion.objectStore(almacen));
-    transaccion.oncomplete = () => {
-      bd.close();
-      resolver(peticion.result);
-    };
-    transaccion.onerror = () => {
-      bd.close();
-      rechazar(transaccion.error);
-    };
-    transaccion.onabort = () => {
-      bd.close();
-      rechazar(transaccion.error);
-    };
-  });
-}
-
-// Guarda un intercambio y devuelve (en una promesa) el id que se le ha asignado.
-export function altaIntercambio(intercambio) {
-  return operar("intercambios", "readwrite", (almacen) => almacen.add(intercambio));
-}
-
-export function obtenerIntercambios() {
-  return operar("intercambios", "readonly", (almacen) => almacen.getAll());
-}
-
-export async function borrarIntercambio(id) {
-  await operar("intercambios", "readwrite", (almacen) => almacen.delete(id));
-  await deseleccionarIntercambio(id); // si estaba seleccionado, deja de estarlo
-}
-
-export function seleccionarIntercambio(id) {
-  return operar("seleccionados", "readwrite", (almacen) => almacen.put({ id }));
-}
-
-export function deseleccionarIntercambio(id) {
-  return operar("seleccionados", "readwrite", (almacen) => almacen.delete(id));
-}
-
-// Devuelve los intercambios completos que están seleccionados en el Dashboard.
-export async function obtenerSeleccionados() {
-  const marcas = await operar("seleccionados", "readonly", (almacen) => almacen.getAll());
-  const ids = marcas.map((marca) => marca.id);
-  const todos = await obtenerIntercambios();
-  return todos.filter((intercambio) => ids.includes(intercambio.id));
 }
 
 /* ------------------------------------------------------------------ */
