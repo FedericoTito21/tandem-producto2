@@ -33,13 +33,14 @@ function mostrarUsuarioActivo() {
 function mostrarMensaje(texto, tipo = "success") {
     const contenedor = document.getElementById("mensajes");
     const alerta = document.createElement("div");
-    alerta.className = `alert alert-${tipo} alert-dismissible face show`;
+    alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
     alerta.setAttribute("role", "alert");
     const cerrar = document.createElement("button");
     cerrar.type = "button";
     cerrar.className = "btn-close";
     cerrar.setAttribute("data-bs-dismiss", "alert");
     cerrar.setAttribute("aria-label", "Cerrar");
+    alerta.prepend(texto);
     alerta.appendChild(cerrar);
     contenedor.replaceChildren(alerta);
     setTimeout(() => alerta.remove(), 4000);
@@ -61,12 +62,12 @@ function validarFormulario() {
 
     const t = titulo.value.trim();
     const d = descripcion.value.trim();
-    const f = fecha.value();
+    const f = fecha.value;
 
     const resultados = [
         marcar(titulo, t.length >= 3 && t.length <= 100),
         marcar(email, EMAIL_RE.test(email.value.trim())),
-        marcar(fecha, /^\d{4}-\d{2}$/.test(f) && !Number.isNaN(Date.parse(f))),
+        marcar(fecha, /^\d{4}-\d{2}-\d{2}$/.test(f) && !Number.isNaN(Date.parse(f))),
         marcar(descripcion, d.length > 0 && d.length <= 500),
         marcar(tipo, TIPOS.includes(tipo.value)),
     ];
@@ -255,9 +256,9 @@ function dibujarGrafico(intercambios) {
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
 
-    for (let v = 0; v <= tope; c += paso) {
+    for (let v = 0; v <= tope; v += paso) {
         const y = yDe(v);
-        ctx.strokeStyle = v === 0 ? "#adb5bd" : "#393cef";
+        ctx.strokeStyle = v === 0 ? "#adb5bd" : "#e9ecef";
         ctx.beginPath();
         ctx.moveTo(margen.left, y);
         ctx.lineTo(margen.left + w, y);
