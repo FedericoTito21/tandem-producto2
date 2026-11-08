@@ -1,6 +1,7 @@
 // int_3_intercambios.js
 // Página de Intercambios: alta, consulta, borrado (IndexedDB vía almacenaje.js) y gráfico canvas nativo.
 
+import { actualizarBarra } from "./componentes/layout.js";
 import * as almacenaje from "./almacenaje.js";
 
 const TIPOS = ["Ofrezco idioma", "Busco idioma"];
