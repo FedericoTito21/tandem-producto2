@@ -7,20 +7,24 @@ import { marcar } from "../utils/validacion.js";
 
 export function crearFormulario(formulario, reglas) {
     const campos = {};
-    for (const id of Object.keys(reglas)) {
-        const campo = formulario.elements[id];
-        if (!campo) throw new Error(`El formulario #${formulario.id} no tiene el campo «${id}»`);
-        campos[id] = campo;
-    }
+    const textosOriginales = {}; // texto del .invalid-feedback escrito en el HTML
 
     function feedbackDe(campo) {
         return (campo.closest(".mb-3") ?? campo.parentElement).querySelector(".invalid-feedback");
     }
 
-    // Marca un campo en rojo (y camboa su mensaje si se indica). Útil para errores del almacenaje.
+    for (const id of Object.keys(reglas)) {
+        const campo = formulario.elements[id];
+        if (!campo) throw new Error(`El formulario #${formulario.id} no tiene el campo «${id}»`);
+        campos[id] = campo;
+        textosOriginales[id] = feedbackDe(campo)?.textContent ?? "";
+    }
+
+
+    // Marca un campo en rojo. Sin mensaje, vuelve a poner el texto original del HTML.
     function invalidar(id, mensaje = null) {
         const feedback = feedbackDe(campos[id]);
-        if (mensaje && feedback) feedback.textContent = mensaje;
+        if (feedback) feedback.textContent = mensaje ?? textosOriginales[id];
         return marcar(campos[id], false);
     }
 
