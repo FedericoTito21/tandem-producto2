@@ -3,7 +3,7 @@
 import { celda } from "../utils/dom.js";
 
 // Pinta las filas en el tbody; si no hay datos, una fila con el mensaje que ocupa todas las columnas.
-export function pintarTablas({
+export function pintarTabla({
   tbody,
   datos,
   crearFila,
