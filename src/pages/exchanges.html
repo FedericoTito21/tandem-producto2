@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tándem - Intercambios</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body data-pagina="intercambios">
+
+    <!-- Cabecera común: la genera js/componentes/layout.js -->
+    <header id="layout-header"></header>
+
+    <main class="container py-4">
+        <h1 class="h3 mb-4 text-center">Gestión de Intercambios</h1>
+
+        <div id="mensajes" aria-live="polite"></div>
+
+        <div class="row g-4">
+            <!-- Alta de intercambio -->
+            <section class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header fw-semibold">Alta de intercambios</div>
+                    <div class="card-body">
+                        <form id="formIntercambio" novalidate>
+                            <div class="mb-3">
+                                <label for="titulo" class="form-label">Título</label>
+                                <input type="text" class="form-control" id="titulo" maxlength="100" required>
+                                <div class="invalid-feedback">El título es obligatorio (3 a 100 caracteres).</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                                <div class="invalid-feedback">Introduce un email válido.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fecha" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fecha" required>
+                                <div class="invalid-feedback">Introduce una fecha válida.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" rows="3" maxlength="500"
+                                    required></textarea>
+                                <div class="invalid-feedback">La descripción es obligatoria (máx. 500 caracteres).</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tipo" class="form-label">Tipo</label>
+                                <select class="form-select" id="tipo" required>
+                                    <option value="">Selecciona un tipo</option>
+                                    <option value="Ofrezco idioma">Ofrezco idioma</option>
+                                    <option value="Busco idioma">Busco idioma</option>
+                                </select>
+                                <div class="invalid-feedback">Selecciona un tipo.</div>
+                            </div>
+                            <button type="submit" id="btnAlta" class="btn btn-primary w-100">Dar de alta</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Consulta, borrado y gráfico -->
+            <section class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header fw-semibold d-flex justify-content-between">
+                        <span>Consulta y borrado</span>
+                        <span class="badge text-bg-secondary" id="totalIntercambios">0</span>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Email</th>
+                                    <th>Fecha</th>
+                                    <th>Descripción</th>
+                                    <th>Tipo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaIntercambios"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header fw-semibold">Gráfico de intercambios por mes</div>
+                    <div class="card-body">
+                        <canvas id="graficoIntercambios" class="w-100" role="img"
+                            aria-label="Gráfico de barras de intercambios por mes y tipo"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Pie común: lo genera js/componentes/layout.js -->
+    <footer id="layout-footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script type="module" src="../js/int_3_intercambios.js"></script>
+
+</body>
+
+</html>

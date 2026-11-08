@@ -1,9 +1,9 @@
 // js/int_1_dashboard.js
 // Dashboard: tarjetas de intercambios que se arrastran (API Drag and Drop de HTML5)
 // a la zona de seleccionados. La selección se guarda en IndexedDB y se recuerda al recargar.
+import "./componentes/layout.js";
 import * as almacenaje from "./almacenaje.js";
-import { escaparHtml, formatearFecha } from "./utils.js";
-import "./nav.js"; // muestra el usuario activo en la barra
+import { crearTarjeta, textoVacio } from "./componentes/tarjeta.js";
 
 await almacenaje.iniciarDatosDemo();
 
@@ -17,42 +17,7 @@ const botonesFiltro = document.querySelectorAll("[data-filtro]");
 
 let filtro = "todos"; // "todos", "Ofrezco idioma" o "Busco idioma"
 
-// 2. Construye UNA tarjeta. "seleccionada" decide el texto del botón alternativo.
-function crearTarjeta(i, seleccionada) {
-  const esOferta = i.tipo === "Ofrezco idioma";
-  const tarjeta = document.createElement("div");
-  tarjeta.className = "card tarjeta-intercambio mb-2" + (esOferta ? "" : " peticion");
-  tarjeta.draggable = true;
-  tarjeta.dataset.id = i.id;
-  tarjeta.innerHTML = `
-    <div class="card-body py-2">
-      <span class="badge ${esOferta ? "bg-success" : "bg-warning text-dark"} mb-1">${escaparHtml(i.tipo)}</span>
-      <h3 class="h6 card-title mb-1">${escaparHtml(i.titulo)}</h3>
-      <p class="card-text small text-muted mb-1">${escaparHtml(i.email)} · ${escaparHtml(formatearFecha(i.fecha))}</p>
-      <p class="card-text small mb-2">${escaparHtml(i.descripcion)}</p>
-      <button type="button" class="btn btn-sm btn-outline-primary" data-mover="${i.id}">
-        ${seleccionada ? "Quitar de la selección" : "Seleccionar"}
-      </button>
-    </div>`;
-  // Al empezar a arrastrar guardamos el id de la tarjeta
-  tarjeta.addEventListener("dragstart", (evento) => {
-    evento.dataTransfer.setData("text/plain", String(i.id));
-    evento.dataTransfer.effectAllowed = "move";
-    tarjeta.classList.add("arrastrando");
-  });
-  tarjeta.addEventListener("dragend", () => tarjeta.classList.remove("arrastrando"));
-  return tarjeta;
-}
-
-// Mensaje que aparece cuando una zona está vacía
-function textoVacio(texto) {
-  const p = document.createElement("p");
-  p.className = "text-muted small text-center my-3 vacio";
-  p.textContent = texto;
-  return p;
-}
-
-// 3. Lee IndexedDB y pinta las tarjetas en su zona
+// 2. Lee IndexedDB y pinta las tarjetas en su zona
 async function pintar() {
   let todos = [];
   let seleccionados = [];
@@ -80,7 +45,7 @@ async function pintar() {
   contadorSeleccion.textContent = enSeleccion;
 }
 
-// 4. Prepara una zona para recibir tarjetas arrastradas
+// 3. Prepara una zona para recibir tarjetas arrastradas
 function prepararZona(zona, accion) {
   // Sin preventDefault en dragover el navegador no permite soltar
   zona.addEventListener("dragover", (evento) => {
@@ -102,7 +67,7 @@ function prepararZona(zona, accion) {
 prepararZona(zonaSeleccion, almacenaje.seleccionarIntercambio);
 prepararZona(zonaOrigen, almacenaje.deseleccionarIntercambio); // arrastrar de vuelta quita la selección
 
-// 5. Botón alternativo (móvil y teclado): mueve la tarjeta sin arrastrar
+// 4. Botón alternativo (móvil y teclado): mueve la tarjeta sin arrastrar
 document.addEventListener("click", async (evento) => {
   const boton = evento.target.closest("[data-mover]");
   if (!boton) return;
