@@ -45,6 +45,17 @@ async function pintar() {
   contadorSeleccion.textContent = enSeleccion;
 }
 
+async function moverTarjeta(accion, id) {
+  try {
+    await accion(id);
+  } catch (error) {
+    console.error(error);
+    aviso.innerHTML = '<div class="alert alert-danger">No se pudo guardar la selección.</div>';
+    return;
+  }
+  await pintar();
+}
+
 // 3. Prepara una zona para recibir tarjetas arrastradas
 function prepararZona(zona, accion) {
   // Sin preventDefault en dragover el navegador no permite soltar
@@ -59,9 +70,8 @@ function prepararZona(zona, accion) {
     evento.preventDefault();
     zona.classList.remove("zona-activa");
     const id = Number(evento.dataTransfer.getData("text/plain")); // el id viaja como texto
-    if (Number.isNaN(id)) return;
-    await accion(id);
-    pintar();
+    if (!Number.isInteger(id) || id <= 0) return;
+    await moverTarjeta(accion, id);
   });
 }
 prepararZona(zonaSeleccion, almacenaje.seleccionarIntercambio);
@@ -72,9 +82,10 @@ document.addEventListener("click", async (evento) => {
   const boton = evento.target.closest("[data-mover]");
   if (!boton) return;
   const id = Number(boton.dataset.mover);
-  if (boton.closest("#zona-seleccion")) await almacenaje.deseleccionarIntercambio(id);
-  else await almacenaje.seleccionarIntercambio(id);
-  pintar();
+  const accion = boton.closest("#zona-seleccion")
+    ? almacenaje.deseleccionarIntercambio
+    : almacenaje.seleccionarIntercambio;
+  await moverTarjeta(accion, id);
 });
 
 // 6. Filtros (opcionales)
