@@ -79,7 +79,7 @@ export function pintarLayout(paginaActual = document.body.dataset.pagina) {
     if (pie) pie.innerHTML = crearPie();
 
     const titulo = tituloDe(paginaActual);
-    document.title = titulo ? `Tándime - ${titulo}` : "Tándem";
+    document.title = titulo ? `Tándem - ${titulo}` : "Tándem";
 
     const boton = document.getElementById("botonSesion");
     if (boton) {
