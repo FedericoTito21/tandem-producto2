@@ -46,7 +46,7 @@ export function crearBotonBorrar(datos, etiqueta = "Borrar") {
 // El manejador recibe los data-* del botón y devuelve false si se cancela o falla.
 export function alBorrar(tbody, manejador) {
   tbody.addEventListener("click", async (evento) => {
-    const btn = evento.target.closest("button[data-email]");
+    const btn = evento.target.closest("button[data-borrar]");
     if (!btn) return;
 
     const { borrar, ...datos } = btn.dataset;
