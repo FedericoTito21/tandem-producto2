@@ -42,7 +42,7 @@ const formulario = crearFormulario(
 // USUARIO ACTIVO: precarga su email en el formulario
 function precargarEmail() {
   const usuario = almacenaje.obtenerUsuarioActivo();
-  if (usuario) campos.email.value = usuario.email;
+  if (usuario) formulario.campos.email.value = usuario.email;
 }
 
 // ALTA
@@ -79,8 +79,10 @@ function crearFila(i) {
     celda(formatearFecha(i.fecha)),
     celda(i.descripcion),
     tdTipo,
-    crearBotonBorrar({ id: i.id, titulo: id.titulo }, `Borrar ${i.titulo}`),
+    crearBotonBorrar({ id: i.id, titulo: i.titulo }, `Borrar ${i.titulo}`),
   );
+
+  return fila;
 }
 
 async function refrescar() {
