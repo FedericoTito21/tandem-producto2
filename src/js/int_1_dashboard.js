@@ -1,10 +1,10 @@
 // js/int_1_dashboard.js
 // Dashboard: tarjetas de intercambios que se arrastran (API Drag and Drop de HTML5)
 // a la zona de seleccionados. La selección se guarda en IndexedDB y se recuerda al recargar.
+import "./componentes/layout.js"; // cabecera, pie y usuario activo
 import * as almacenaje from "./almacenaje.js";
 import { escaparHtml } from "./utils/dom.js";
 import { formatearFecha } from "./utils/formato.js";
-import "./componentes/layout.js"; // cabecera, pie y usuario activo
 
 await almacenaje.iniciarDatosDemo();
 
