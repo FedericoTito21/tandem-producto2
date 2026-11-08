@@ -28,7 +28,7 @@ export async function operar(almacen, modo, operacion) {
     const bd = await abrirBD();
 
     return new Promise((resolver, rechazar) => {
-        const transaccion = bd.transaccion(almacen, modo);
+        const transaccion = bd.transaction(almacen, modo);
         const peticion = operacion(transaccion.objectStore(almacen));
 
         transaccion.oncomplete = () => {
