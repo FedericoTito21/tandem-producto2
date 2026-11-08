@@ -28,6 +28,6 @@ export function marcar(campo, valido) {
 // Quita las marcas verdes y rojas de todos los campos de un formulario.
 export function limpiarMarcas(formulario) {
     formulario
-        .querySelectorAll(".is-valid", ".is-invalid")
+        .querySelectorAll(".is-valid, .is-invalid")
         .forEach((campo) => campo.classList.remove("is-valid", "is-invalid"));
 }
