@@ -63,7 +63,7 @@ function dibujarBarras(ctx, grupos, meses, w, h, yDe) {
             const valor = grupos[mes][tipo];
             const x = j === 0 ? cx - anchoBarra - 2 : cx + 2;
             const y = yDe(valor);
-            ctx.fillStyle = COLORES[tipo];
+            ctx.fillStyle = COLORES_TIPO[tipo];
             ctx.fillRect(x, y, anchoBarra, MARGEN.top + h - y);
 
             if (valor > 0) {
@@ -87,7 +87,7 @@ function dibujarLeyenda(ctx) {
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     TIPOS.forEach((tipo) => {
-        ctx.fillStyle = COLORES[tipo];
+        ctx.fillStyle = COLORES_TIPO[tipo];
         ctx.fillRect(x, 12, 12, 12);
         ctx.fillStyle = "#212529";
         ctx.fillText(tipo, x + 18, 18);
