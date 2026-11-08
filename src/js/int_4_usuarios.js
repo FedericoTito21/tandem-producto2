@@ -30,7 +30,7 @@ function mostrarMensaje(texto, tipo = "success") {
 // VALIDACIÓN
 function emailRepetido(email) {
   const correo = email.trim().toLowerCase();
-  return almacenaje.obtenerUsuarios.some(
+  return almacenaje.obtenerUsuarios().some(
     (u) => u.email.toLowerCase() === correo,
   );
 }
