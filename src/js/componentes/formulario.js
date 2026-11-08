@@ -25,7 +25,8 @@ export function crearFormulario(formulario, reglas) {
     }
 
     function validarCampo(id) {
-        const resultado = reglas[id](campos[id], true);
+        const resultado = reglas[id](campos[id].value);
+        if (resultado === true) return marcar(campos[id], true);
         return invalidar(id, typeof resultado === "string" ? resultado  : null);
     }
 
