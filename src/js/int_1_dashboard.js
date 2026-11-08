@@ -2,7 +2,8 @@
 // Dashboard: tarjetas de intercambios que se arrastran (API Drag and Drop de HTML5)
 // a la zona de seleccionados. La selección se guarda en IndexedDB y se recuerda al recargar.
 import * as almacenaje from "./almacenaje.js";
-import { escaparHtml, formatearFecha } from "./utils.js";
+import { escaparHtml } from "./utils/dom.js";
+import { formatearFecha } from "./utils/formato.js";
 import "./nav.js"; // muestra el usuario activo en la barra
 
 await almacenaje.iniciarDatosDemo();
