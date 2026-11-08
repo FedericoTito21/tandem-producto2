@@ -26,6 +26,8 @@ src/
       demo.js               datos de ejemplo
     componentes/
       layout.js             cabecera y pie comunes, usuario activo, cerrar sesión
+      formulario.js         formulario con validación Bootstrap (alta de intercambios y usuarios)
+      tabla.js              tabla de consulta y borrado (intercambios y usuarios)
       tarjeta.js            tarjeta arrastrable del Dashboard
       grafico.js            gráfico de barras con canvas
     utils/
@@ -48,6 +50,36 @@ Dependencias en un solo sentido:
 3. Cada HTML indica su página en `<body data-pagina="...">` (`dashboard`, `login`, `intercambios`, `usuarios`) e incluye `<header id="layout-header">` y `<footer id="layout-footer">` vacíos.
 4. Todos los `import` llevan la extensión `.js` (el navegador no la completa).
 5. Los nombres de las APIs del navegador no se traducen (`transaction`, `objectStore`, `getItem`...).
+6. Los formularios de alta y las tablas de consulta y borrado se construyen con `componentes/formulario.js` y `componentes/tabla.js`; las páginas solo aportan las reglas de validación, la fila y lo que pasa al guardar o borrar.
+
+## Componentes reutilizables
+
+### formulario.js
+`crearFormulario(formulario, reglas)` recibe el `<form>` y un objeto con una regla por campo (la clave es el `id` del campo).
+Cada regla devuelve:
+1. `true`: campo válido (verde).
+2. `false`: no válido; se muestra el `.invalid-feedback` escrito en el HTML.
+3. Un texto: no válido; ese texto sustituye al del `.invalid-feedback` (p. ej. «Ya existe un usuario con este email»).
+
+Devuelve un objeto con:
+
+| Miembro | Uso |
+|---|---|
+| `campos` | Los elementos del formulario por `id` |
+| `validar()` | Valida y marca todos los campos; devuelve `true`/`false` |
+| `valores()` | Valores recortados (las contraseñas no se recortan) |
+| `limpiar(conservar)` | Vacía el formulario y quita las marcas; mantiene los campos indicados |
+| `invalidar(id, mensaje)` | Marca un campo en rojo desde fuera (errores del almacenaje) |
+| `alEnviar(manejador, alFallar)` | Evita la recarga, valida, desativa el botón y llama a `manejador(valores)` |
+
+Incluye validación en vivo: al salir de un campo con texto y al corregir uno ya marcado.
+
+### tabla.js
+| Función | Uso |
+|---|---|
+| `pintarTabla({ tbody, datos, crearFila, mensajeVacio, contador })` | Pinta las filas; si no hay datos, una fila con el mensaje que ocupa todas las columnas. Actualiza el contador |
+| `crearBotonBorrar(datos, etiqueta)` | Deuvelve un `<td>` con el botón «Borrar»; `datos` se guarda en `data-*` |
+|`alBorrar(tbody, manejador)` | Un solo listener para todos los botones (delegación). `manejador(datos)` devuelve `false` si se cancela o falla y el botón se reactiva |
 
 ## Plantilla para una página nueva
 ```html
@@ -63,10 +95,20 @@ Dependencias en un solo sentido:
 ```
 ```js
 // js/int_4_usuarios.js
-import "./componentes/layout.js";
+import { actualizarBarra } from "./componentes/layout.js";
 import * as almacenaje from "./almacenaje.js";
+import { crearFormulario } from "./componentes/formulario.js";
+import { pintarTabla, crearBotonBorrar, alBorrar } from "./componentes/tabla.js";
 import { mostrarAviso, celda } from "./utils/dom.js";
-import { esEmail, longitudEntre, marcar, limpiarMarcas } from "./utils/validacion.js";
+import { esEmail, longitudEntre } from "./utils/validacion.js";
+
+const formulario = crearFormulario(document.getElementById("formUsuario"), {
+  nombre: (v) => longitudEntre(v, 2, 50),
+  email: (v) => esEmail(v) || "Introduce un email válido.",
+});
+
+formulario.alEnviar((datos) => { /* guardar con almacenaje y refrescar */ });
+alBorrar(tbody, ({ email }) => { /* confirmar, borrar y refrescar */ });
 ```
 
 ## Datos de ejemplo
