@@ -15,8 +15,14 @@ function abrirBD() {
             bd.createObjectStore("seleccionados", { keyPath: "id" });
         };
 
-        peticion.onsuccess = () => resolver(peticion.result);
+        peticion.onsuccess = () => {
+            const bd = peticion.result;
+            // Si otra pestaña abre una versión nueva, se cierra esta conexión para no bloquearla
+            bd.onversionchange = () => bd.close();
+            resolver(bd);
+        };
         peticion.onerror = () => rechazar(peticion.error);
+        peticion.onblocked = () => console.warn("IndexedDB bloqueada: cierra las otras pestañas de la aplicación.");
     });
 }
 
@@ -28,20 +34,26 @@ export async function operar(almacen, modo, operacion) {
     const bd = await abrirBD();
 
     return new Promise((resolver, rechazar) => {
-        const transaccion = bd.transaction(almacen, modo);
-        const peticion = operacion(transaccion.objectStore(almacen));
-
-        transaccion.oncomplete = () => {
+        try {
+            const transaccion = bd.transaction(almacen, modo);
+            const peticion = operacion(transaccion.objectStore(almacen));
+    
+            transaccion.oncomplete = () => {
+                bd.close();
+                resolver(peticion.result);
+            };
+            transaccion.onerror = () => {
+                bd.close();
+                rechazar(transaccion.error);
+            };
+            transaccion.onabort = () => {
+                bd.close();
+                rechazar(transaccion.error);
+            };
+        } catch (error) {
+            // p. ej. DataError en add() o un almacén inexistente: se lanza al momento, no por evento
             bd.close();
-            resolver(peticion.result);
-        };
-        transaccion.onerror = () => {
-            bd.close();
-            rechazar(transaccion.error);
-        };
-        transaccion.onabort = () => {
-            bd.close();
-            rechazar(transaccion.error);
-        };
+            rechazar(error);
+        }
     });
 }
