@@ -4,7 +4,7 @@
 import * as almacenaje from "./almacenaje.js";
 import { escaparHtml } from "./utils/dom.js";
 import { formatearFecha } from "./utils/formato.js";
-import "./nav.js"; // muestra el usuario activo en la barra
+import "./componentes/layout.js"; // cabecera, pie y usuario activo
 
 await almacenaje.iniciarDatosDemo();
 
