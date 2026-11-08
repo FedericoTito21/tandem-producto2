@@ -1,6 +1,6 @@
 // js/almacenaje.js
 // Punto de entrada ÚNICO a todas las operaciones CRUd de la aplicación.
-// Las páginas solo importan este archivo: import * as almacenje from "./almacenaje.js";
+// Las páginas solo importan este archivo: import * as almacenaje from "./almacenaje.js";
 // Por dentro, el código está dividido en submódulos de la carpeta almacenaje/:
 // - usuarios.js -> usuarios y sesión (localStorage, síncrono)
 // - intercambios.js -> intercambios y selección del Dashboard (IndexedDB, promesas)
