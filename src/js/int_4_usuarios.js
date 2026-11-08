@@ -155,7 +155,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Si otra pestaña cambia usuarios o sesión, se actualiza esta
   window.addEventListener("storage", () => {
     refrescar();
-    actualizarBarra();
   });
 
   refrescar();
