@@ -90,6 +90,12 @@ export function pintarLayout(paginaActual = document.body.dataset.pagina) {
     }
 
     actualizarBarra();
+
+    // Si otra pestaña inicia o cierra sesión (o borra usuarios), se actualiza la barra.
+    // key === null cuando se vacía todo el localStorage
+    window.addEventListener("storage", (evento) => {
+        if (evento.key === null || evento.key.startsWith("tandem-")) actualizarBarra();
+    });
 }
 
 // Se pinta automáticamente al importar el módulo
