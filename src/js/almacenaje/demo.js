@@ -1,8 +1,8 @@
 // js/almacenjae/demo.js
 // Datos de ejemplo que se cargan UNA sola vez, para poder probar la apliación.
 // Si no se quieren, basta con borrar la llamada a iniciarDatosDemo() en los scripts de página.
-import { obtenerUsuarios, altaUsuario } from "./usuarios";
-import { obtenerIntercambios, altaIntercambio } from "./intercambios";
+import { obtenerUsuarios, altaUsuario } from "./usuarios.js";
+import { obtenerIntercambios, altaIntercambio } from "./intercambios.js";
 
 const CLAVE_DEMO = "tandem-demo-hecho";
 
