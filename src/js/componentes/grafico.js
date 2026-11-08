@@ -1,7 +1,7 @@
 // js/componentes/grafico.js
 // Gráfico de barras de intercambios por mes y tipo, dibujado con la API Canvasde HTML5 (sin librerías)
 import { TIPOS, COLORES_TIPO } from "../utils/constantes.js";
-import { formatearFecha, formatearMes } from "../utils/formato.js";
+import { formatearFecha } from "../utils/formato.js";
 
 const ALTO = 320;
 const MARGEN = { top: 40, right: 16, bottom: 36, left: 40 };
@@ -95,20 +95,25 @@ function dibujarLeyenda(ctx) {
     });
 }
 
+function dibujarSinDatos(ctx, ancho) {
+    ctx.fillStyle = "#6c767d";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("Sin datos para mostrar", ancho / 2, ALTO / 2);
+}
+
 // Función pública: dibuja el gráfico en el canvas indicado (últimos 12 meses con datos)
 export function dibujarGrafico(canvas, intercambios) {
     const { ctx, ancho } = prepararLienzo(canvas);
 
-    if (intercambios.length === 0) {
-        ctx.fillStyle = "#6c757d";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText("Sin datos para mostrar", ancho / 2, ALTO / 2);
-        return;
-    }
-
     const grupos = agruparPorMes(intercambios);
     const meses = Object.keys(grupos).sort().slice(-12);
+    
+    if (meses.length === 0) {
+        dibujarSinDatos(ctx, ancho);
+        return;
+    }
+    
     const maximo = Math.max(1, ...meses.flatMap((m) => TIPOS.map((t) => grupos[m][t])));
 
     const w = ancho - MARGEN.left - MARGEN.right;
