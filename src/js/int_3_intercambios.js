@@ -3,7 +3,7 @@
 import "./componentes/layout.js";
 import * as almacenaje from "./almacenaje.js";
 import { dibujarGrafico } from "./componentes/grafico.js";
-import { mostrarAviso, celda } from "./componentes/grafico.js";
+import { mostrarAviso, celda } from "./utils/dom.js";
 import { formatearFecha } from "./utils/formato.js";
 import {
   esEmail,
@@ -96,7 +96,7 @@ async function manejarAlta(evento) {
     console.error(error);
     mostrarMensaje("No se ha podido guardar el intercambio.", "danger");
   } finally {
-    boton.disabled = false;
+    botonAlta.disabled = false;
   }
 }
 
