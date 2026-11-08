@@ -48,7 +48,7 @@ export function borrarUsuario(email) {
 
   guardarUsuarios(restantes);
 
-  if (localStorage.getItem(CLAVE_SESION) === correo) cerrarSesion();
+  if (localStorage.getItem(CLAVE_SESSION) === correo) cerrarSesion();
 }
 
 /** ------------- SESIÓN ------------- */
@@ -62,14 +62,14 @@ export function loguearUsuario(email, password) {
 
   if (!usuario) return false;
 
-  localStorage.setItem(CLAVE_SESION, correo);
+  localStorage.setItem(CLAVE_SESSION, correo);
 
   return true;
 }
 
 // Devuelve el usuario con la sesión abierta o null si no hay nadie.
 export function obtenerUsuarioActivo() {
-  const email = localStorage.getItem(CLAVE_SESION);
+  const email = localStorage.getItem(CLAVE_SESSION);
 
   if (!email) return null;
 
@@ -77,5 +77,5 @@ export function obtenerUsuarioActivo() {
 }
 
 export function cerrarSesion() {
-  localStorage.removeItem(CLAVE_SESION);
+  localStorage.removeItem(CLAVE_SESSION);
 }
