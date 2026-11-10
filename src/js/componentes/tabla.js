@@ -15,9 +15,7 @@ export function pintarTabla({
   if (datos.length === 0) {
     const fila = document.createElement("tr");
     const td = celda(mensajeVacio);
-    td.colSpan = tbody
-      .closest("table")
-      ?.querySelectorAll("thead th".length || 1);
+    td.colSpan = tbody.closest("table")?.querySelectorAll("thead th").length || 1;
     td.className = "text-center text-muted";
     fila.appendChild(td);
     tbody.replaceChildren(fila);
