@@ -1,7 +1,7 @@
-// js/login.js
+// js/int_2_login.js
 // Página de inicio de sesión: valida el formulario y autentica con almacenaje.js.
+import { actualizarBarra } from "./componentes/layout.js";
 import * as almacenaje from "./almacenaje.js";
-import { actualizarBarra } from "./nav.js";
 
 // Muestra el nombre del usuario activo, o -no login- si no hay ninguno.
 function mostrarUsuarioActivo() {

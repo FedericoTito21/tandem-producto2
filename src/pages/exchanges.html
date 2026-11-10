@@ -4,35 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intercambios</title>
+    <title>Tándem - Intercambios</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 
-<body class="bg-light">
+<body data-pagina="intercambios">
 
-    <!-- Barra de navegación común -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Intercambio de Idiomas</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
-                aria-controls="menu" aria-expanded="false" aria-label="Menú">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page"
-                            href="exchanges.html">Intercambios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="usuarios.html">Usuarios</a></li>
-                </ul>
-                <span class="navbar-text">Usuario: <strong id="usuarioActivo">-no login-</strong></span>
-            </div>
-        </div>
-    </nav>
+    <!-- Cabecera común: la genera js/componentes/layout.js -->
+    <header id="layout-header"></header>
 
     <main class="container py-4">
         <h1 class="h3 mb-4 text-center">Gestión de Intercambios</h1>
@@ -45,7 +27,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header fw-semibold">Alta de intercambios</div>
                     <div class="card-body">
-                        <form id="formIntercambio" novalidate>
+                        <form id="formIntercambios" novalidate>
                             <div class="mb-3">
                                 <label for="titulo" class="form-label">Título</label>
                                 <input type="text" class="form-control" id="titulo" maxlength="100" required>
@@ -65,7 +47,7 @@
                                 <label for="descripcion" class="form-label">Descripción</label>
                                 <textarea class="form-control" id="descripcion" rows="3" maxlength="500"
                                     required></textarea>
-                                <div class="invalid-feedback">La descripción es obligatoria (max. 500 caracteres).</div>
+                                <div class="invalid-feedback">La descripción es obligatoria (máx. 500 caracteres).</div>
                             </div>
                             <div class="mb-3">
                                 <label for="tipo" class="form-label">Tipo</label>
@@ -117,11 +99,12 @@
         </div>
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-  </script>
-  <script type="module" src="../js/int_2_exchanges.js"></script>
+    <!-- Pie común: lo genera js/componentes/layout.js -->
+    <footer id="layout-footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script type="module" src="../js/int_3_intercambios.js"></script>
 
 </body>
 
