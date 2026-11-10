@@ -1,7 +1,7 @@
 // js/componentes/grafico.js
-// Gráfico de barras de intercambios por mes y tipo, dibujado con la API Canvasde HTML5 (sin librerías)
+// Gráfico de barras de intercambios por mes y tipo, dibujado con la API Canvas de HTML5 (sin librerías)
 import { TIPOS, COLORES_TIPO } from "../utils/constantes.js";
-import { formatearFecha } from "../utils/formato.js";
+import { formatearMes } from "../utils/formato.js";
 
 const ALTO = 320;
 const MARGEN = { top: 40, right: 16, bottom: 36, left: 40 };
@@ -35,7 +35,7 @@ function prepararLienzo(canvas) {
     return { ctx, ancho };
 }
 
-// Líneas horizontales de fondo y núemres del eje Y
+// Líneas horizontales de fondo y números del eje Y
 function dibujarRejilla(ctx, w, tope, paso, yDe) {
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
@@ -51,7 +51,7 @@ function dibujarRejilla(ctx, w, tope, paso, yDe) {
     }
 }
 
-// Dos barras por mes (una por tipo), con su valor encima y el mes debajoç
+// Dos barras por mes (una por tipo), con su valor encima y el mes debajo
 function dibujarBarras(ctx, grupos, meses, w, h, yDe) {
     const anchoGrupo = w / meses.length;
     const anchoBarra = Math.max(4, Math.min(28, anchoGrupo * 0.35));
